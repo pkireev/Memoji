@@ -40,7 +40,19 @@ body {
 
     z-index: 10;
     cursor: pointer;
+
+    transition-delay: 0.2s; /* чтобы граница не красилась сразу и не мешала интриге */
 }
+
+
+.card.correct {
+    border-color: #5ad66f;
+}
+
+.card.incorrect {
+    border-color: #f44336;
+}
+
 
 
 .front {
@@ -74,12 +86,11 @@ body {
 
 .front.correct {
     background-color: #5ad66f;
-    border-color: #5ad66f;
+
 }
 
 .front.incorrect {
     background-color: #f44336;
-    border-color: #f44336;
 }
 
 
@@ -93,6 +104,7 @@ body {
     animation-duration: 0.5s;
     animation-direction: alternate;
     animation-fill-mode: forwards;
+
 }
 
 
@@ -105,10 +117,17 @@ body {
     animation-duration: 0.5s;
     animation-direction: alternate;
     animation-fill-mode: forwards;
+
+/*
+    чтобы граница красилась обратно в белый, даже пока еще стоит класс correct/incorrect
+    это нужно в конце игры
+*/
+
+    border-color: white !important;
 }
 
 .timer {
-    font: bold 42px/47px Arial;
+    font: bold 32px/36px Arial;
     margin-top: 5px;
     width: inherit;
     display: flex;
@@ -167,7 +186,7 @@ body {
     justify-content: center;
     align-items: center;
 
-    font: bold 48px Arial;
+    font: bold 70px Arial;
     min-width: 350px;
     height: 30%;
 
@@ -175,6 +194,7 @@ body {
 
     z-index: 60;
 }
+
 
 .form-button {
      display: flex;
@@ -191,10 +211,58 @@ body {
      margin-top: 40px;
 
      box-shadow: 1px 1px 1px rgba(0,0,0,0.5);
-    cursor: pointer;
+     cursor: pointer;
 }
 
 
 .form-button:active {
-    box-shadow: -1px -1px 1px rgba(0,0,0,0.5);
+    box-shadow: inset 1px 1px 1px rgba(0,0,0,0.5);
+}
+
+
+/* анимация букв! */
+
+.text span {
+    position: relative;
+    top: 20px;
+    display: inline-block;
+    animation: bounce .3s ease infinite alternate;
+
+    text-shadow: 0 1px 0 #CCC,
+    0 2px 0 #CCC,
+    0 3px 0 #CCC,
+    0 4px 0 #CCC,
+    0 5px 0 #CCC,
+    0 6px 0 transparent,
+    0 7px 0 transparent,
+    0 8px 0 transparent,
+    0 9px 0 transparent,
+    0 10px 10px rgba(0, 0, 0, .4);
+}
+
+
+.text span:nth-child(2) {
+    animation-delay: .1s;
+}
+.text span:nth-child(3) {
+    animation-delay: .2s;
+}
+.text span:nth-child(4) {
+    animation-delay: .3s;
+}
+
+@keyframes bounce {
+    100% {
+        top: -20px;
+        text-shadow: 0 1px 0 #CCC,
+        0 2px 0 #CCC,
+        0 3px 0 #CCC,
+        0 4px 0 #CCC,
+        0 5px 0 #CCC,
+        0 6px 0 #CCC,
+        0 7px 0 #CCC,
+        0 8px 0 #CCC,
+        0 9px 0 #CCC,
+        0 50px 25px rgba(0, 0, 0, .2);
+    }
 }
