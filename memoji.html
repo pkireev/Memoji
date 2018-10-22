@@ -6,12 +6,33 @@
     <link rel="stylesheet" href="./memoji.css">
 </head>
 <body>
+
+<!--Модальное окно-->
+
+<!--
+Когда нужно показать модальное окно, делаем .modal + .show-modal
+а также добавляем к form-wrapper'у класс show-form
+-->
+
+
+<div class="form-wrapper">
+    <div class="form">
+        <span>Win!</span>
+        <div class="form-button">Play again</div>
+    </div>
+</div>
+
+
+<div class="modal"></div>
+
+
+    <!--Заголовок-->
     <div class="header">
         Memoji
     </div>
 
 
-
+    <!--Игровое поле-->
     <div class="playground">
         <div class="row" data-row="1">
             <div class="card" id="card0">
@@ -82,6 +103,10 @@
                 </div>
             </div>
         </div>
+
+        <div class="timer">01:00</div>
+
+
 
     </div>
 

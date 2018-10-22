@@ -39,6 +39,8 @@ function Card(img, orderNumber) {
         }
     };
 
+
+
     this.setCorrect = function () { // делаем лицевую сторону зеленой
         this.domFront.classList.add('correct');
     };
@@ -139,7 +141,6 @@ cards.forEach(function (card) {
         var id = parseInt(card.getAttribute('id').replace('card', '')); // это номер открытой только что карты
 
 
-
         // если номер карты, по которой кликнули, есть в массиве отгаданных, то ничего не происходит,
         // иными словами по зеленой карте нет смысла клацать
 
@@ -151,6 +152,7 @@ cards.forEach(function (card) {
 
             gameLogic(id); // передаем в функцию номер открытой только что карты, закрытую не передаем
         }
+
     });
 });
 
@@ -168,7 +170,7 @@ function gameLogic(id) {
         card1.rotate(); // закрываем бывшую красную карту
         card2.rotate(); // и вторую
 
-        card1.removeIncorrect(); // снимаем с них класс некорректности
+        card1.removeIncorrect();
         card2.removeIncorrect();
 
         play.cardsRed = [];
@@ -207,6 +209,16 @@ function gameLogic(id) {
 
             play.cardsRed.push(card1.id, card2.id); // запомним красные карты, чтобы закрыть потом
         }
+
+// сделаем задержку на 200 мс для вывода модального окна
+        if (play.cardsGuessed.length === 12) {
+            setTimeout(function () {
+                document.querySelector('.modal').classList.add('show-modal');
+                document.querySelector('.form-wrapper').classList.add('show-form');
+            }, 400);
+
+        }
+
     }
 
 }

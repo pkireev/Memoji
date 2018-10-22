@@ -3,14 +3,16 @@ body {
     margin: 0;
     border: 0;
     padding: 0;
+    color: #434344;
+
 }
 
 .header {
     display: flex;
     justify-content: center;
     margin: 40px auto;
-    font: bold 42px Arial;
-    color: #434344;
+    font: bold 42px/47px Arial;
+
 }
 
 .playground {
@@ -26,8 +28,8 @@ body {
 
 
 .card {
-    width: 125px;
-    height: 125px;
+    width: 120px;
+    height: 120px;
     margin: 0 25px 25px 0;
 
     border: solid #fff 5px;
@@ -37,7 +39,7 @@ body {
     background: linear-gradient(45deg, #22ab93, #19668d);
 
     z-index: 10;
-
+    cursor: pointer;
 }
 
 
@@ -72,10 +74,12 @@ body {
 
 .front.correct {
     background-color: #5ad66f;
+    border-color: #5ad66f;
 }
 
 .front.incorrect {
     background-color: #f44336;
+    border-color: #f44336;
 }
 
 
@@ -103,3 +107,94 @@ body {
     animation-fill-mode: forwards;
 }
 
+.timer {
+    font: bold 42px/47px Arial;
+    margin-top: 5px;
+    width: inherit;
+    display: flex;
+    justify-content: center;
+}
+
+
+
+.modal {
+    display: none;
+    position: absolute;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+
+    justify-content: center;
+    align-items: center;
+
+    background-color: black;
+    opacity: 0.8;
+
+    z-index: 50;
+}
+
+
+
+.modal.show-modal {
+    display: flex;
+}
+
+.form-wrapper {
+    position: absolute;
+    display: none;
+
+
+    height: 70%;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.form-wrapper.show-form {
+    display: flex;
+}
+
+
+.form {
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+    align-items: center;
+
+    font: bold 48px Arial;
+    min-width: 350px;
+    height: 30%;
+
+    background-color: white;
+
+    z-index: 60;
+}
+
+.form-button {
+     display: flex;
+     align-items: center;
+     justify-content: center;
+
+     font: bold 20px Arial;
+     color: white;
+     background: linear-gradient(to left, #22ab93, #19668d);
+     height: 40px;
+     width: 150px;
+
+     border-radius: 10px;
+     margin-top: 40px;
+
+     box-shadow: 1px 1px 1px rgba(0,0,0,0.5);
+    cursor: pointer;
+}
+
+
+.form-button:active {
+    box-shadow: -1px -1px 1px rgba(0,0,0,0.5);
+}
