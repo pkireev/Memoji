@@ -3,7 +3,6 @@ body {
     margin: 0;
     border: 0;
     padding: 0;
-    width: auto;
 }
 
 .header {
@@ -11,6 +10,7 @@ body {
     justify-content: center;
     margin: 40px auto;
     font: bold 42px Arial;
+    line-height: 47px;
     color: #434344;
 }
 
@@ -30,29 +30,54 @@ body {
     width: 130px;
     height: 130px;
     margin: 0 25px 25px 0;
-    background: linear-gradient(45deg, #22ab93, #19668d);
+
     border: solid #fff 5px;
     border-radius: 9px;
     box-shadow: -1px -1px 5px rgba(0, 0, 0, 0.5);
 
-    transition: all 0.5s ;
+    background: linear-gradient(45deg, #22ab93, #19668d);
 
+    z-index: 10;
 
 }
 
 
-.rotate-card {
-    transform-style: preserve-3d;
-    transform: rotateY(180deg);
-    transition: all 0.5s ;
- }
+.front {
+    z-index: 9;
+    display: flex;
+
+    position: absolute;
+
+    height: inherit;
+    width: inherit;
+
+    justify-content: center;
+    align-items: center;
+
+
+    transition: background-color 0.5s, opacity 0.2s;
+
+    background-color: inherit;
+    opacity: 0;
+
+}
+
+
+.front.opened {
+    transition: all 0.25s;
+    transition-delay: 0.2s;
+    opacity: 1;
+
+    background-color: white;
+}
 
 
 
 
+@keyframes rotateCard {
+    100% {transform: rotateY(180deg);}
+}
 
-
-/*
 .rotate-card {
     animation: rotateCard;
     animation-duration: 0.5s;
@@ -61,8 +86,20 @@ body {
 }
 
 
-@keyframes rotateCard {
+@keyframes rotateCardReverse {
     0% {transform: rotateY(180deg);}
-    100% {background: white;}
 }
-*/
+
+.rotate-reverse {
+    animation: rotateCardReverse;
+    animation-duration: 0.5s;
+    animation-direction: alternate;
+    animation-fill-mode: forwards;
+}
+
+
+
+
+
+
+
