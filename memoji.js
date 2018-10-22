@@ -1,19 +1,13 @@
 
 
 
-
-// НАДО ИСПРАВИТЬ ЧИТ-МОДЕ!!!!!!
-
-
-
-
-
 // Делаем конструктор класса карточки
 /*
     img - ссылка на картинку
-    flip - открыта или нет, по умолчанию нет
-    backgroundColor - открытая карта зеленая или красная, для понимания - угадали или нет
-    domClass - класс, чтобы найти конкретную карту через querySelector
+    flip - открыта true, закрыта - false, на старте - undefined (не false, чтобы молчала анимация)
+    id - порядковый номер карты
+    domCard - карточка в DOM, чтобы найти конкретную карту через querySelector
+    domFront - лицевая сторона карты в DOM
 */
 
 
@@ -21,30 +15,42 @@
 function Card(img, orderNumber) {
     this.img = img; // url картинки
     this.flip = undefined; // начальное состояние - undefined, рубашкой - false, картинкой - true
-    this.backgroundColor = '';
     this.id = orderNumber;
+    this.domCard = document.querySelector('#card' + this.id);
+    this.domFront = this.domCard.querySelector('.front');
+    this.domImg = document.getElementById('img' + this.id);
+
+    //при создании карточки сразу указываем в DOM ссылку на изображение
+    this.domImg.setAttribute('src', this.img);
 
 
 
-    // здесь надо реализовать логику работы с классами HTML через методы
-
-
-
-
-    this.rotate = function () {
-        var card = document.querySelector('#card' + this.id);
+    this.rotate = function () { //реализует переворот карточки как на лицо, так и на рубашку
 
         if (this.flip === undefined) {
             this.flip = true; // на старте undefined, поэтому цепляем нужные классы открытия
-            card.classList.add('rotate-card');
-            card.querySelector('.front').classList.add('opened');
+            this.domCard.classList.add('rotate-card');
+            this.domFront.classList.add('opened');
         } else {
             this.flip = !this.flip; // потом просто делаем toggle
-            card.classList.toggle('rotate-card');
-            card.classList.toggle('rotate-reverse');
-            card.querySelector('.front').classList.toggle('opened');
+            this.domCard.classList.toggle('rotate-card');
+            this.domCard.classList.toggle('rotate-reverse');
+            this.domFront.classList.toggle('opened');
         }
-    }
+    };
+
+    this.setCorrect = function () { // делаем лицевую сторону зеленой
+        this.domFront.classList.add('correct');
+    };
+
+    this.setIncorrect = function () { // делаем лицевую сторону красной
+        this.domFront.classList.add('incorrect');
+    };
+
+    this.removeIncorrect = function () { // снимаем красноту
+        this.domFront.classList.remove('incorrect');
+    };
+
 }
 
 
@@ -53,6 +59,7 @@ function Card(img, orderNumber) {
 
 // Делаем конструктор класса игрового поля
 /*
+
 в нем создаем массив объектов всех 12 карточек (изображений)
 перемешиваем массив
 создаем массив объектов карточек
@@ -60,22 +67,14 @@ function Card(img, orderNumber) {
 
  */
 
-function Playground() {
+function Playground(imgPath, pictures) {
     // создать набор из 12 карточек
 
-    var _imgPath = 'https://cdn.shopify.com/s/files/1/1061/1924/products/';
-    var _pictures = 'tiger_emoji_icon_png_large.png?v=1480481019;' +
-        'Bear_emoji_icon_png_large.png?v=1480481027;' +
-        'Cow_emoji_icon_png_large.png?v=1480481026;' +
-        'Octopus_Iphone_Emoji_JPG_large.png?v=1513340509;' +
-        'Rabbit_Face_Emoji_large.png?v=1480481037;' +
-        'Spouting_Whale_Emoji_large.png?v=1480481038';
-
     // создаем массив картинок методом перевода строки url в массив дважды, соединения 2 массивов и затем перемешивания
-    var _picturesArray = _shuffle(_pictures.split(';').concat(_pictures.split(';')));
+    var _picturesArray = _shuffle(pictures.split(';').concat(pictures.split(';')));
 
 
-    function _shuffle(a) {
+    function _shuffle(a) { // здесь перемешиваются картинки
         var j, x, i;
         for (i = a.length - 1; i > 0; i--) {
             j = Math.floor(Math.random() * (i + 1));
@@ -86,14 +85,14 @@ function Playground() {
         return a;
     }
 
-    this.cards = []; // массив объектов карточек
+    this.cards = []; //наполняем массив объектов карточек
 
     for (var i = 0; i < 12; i++) {
-        var card = new Card(_imgPath + _picturesArray[i], i);
+        var card = new Card(imgPath + _picturesArray[i], i);
         this.cards.push(card);
     }
 
-    this.cardsOpened = []; // массив из открытых для проверки карт
+    this.cardsOpened = []; // массив из открытых на текущий момент карт
     this.cardsGuessed = []; // массив из угаданных карт, которые не крутятся больше
     this.cardsRed = []; // массив из красных карт, чтобы их закрыть
 
@@ -103,18 +102,18 @@ function Playground() {
 
 
 
-// при загрузке создаем экземпляр класса игрового поля, расставляем url картинок (уже перетасованных)
-// и добавляем в атрибут src каждой карточки
+// при загрузке создаем экземпляр класса игрового поля, создаем 12 объекутов карточек со своими картинками
+
+var _imgPath = 'https://cdn.shopify.com/s/files/1/1061/1924/products/';
+var _pictures = 'tiger_emoji_icon_png_large.png?v=1480481019;' +
+    'Bear_emoji_icon_png_large.png?v=1480481027;' +
+    'Cow_emoji_icon_png_large.png?v=1480481026;' +
+    'Octopus_Iphone_Emoji_JPG_large.png?v=1513340509;' +
+    'Rabbit_Face_Emoji_large.png?v=1480481037;' +
+    'Spouting_Whale_Emoji_large.png?v=1480481038';
 
 
-var play = new Playground();
-
-for (var i = 0; i < 12; i++) {
-    var obj = document.getElementById('img' + play.cards[i].id);
-    obj.setAttribute('src', play.cards[i].img);
-}
-
-
+var play = new Playground(_imgPath, _pictures);
 
 
 
@@ -159,19 +158,20 @@ cards.forEach(function (card) {
 
 function gameLogic(id) {
 
-
+    var card1, card2;
     // сначала проверим - есть ли красные карты, чтобы их закрыть
 
-    // если были открыты красные карты, то они должны закрыться
-
     if (play.cardsRed.length > 0) {
-        play.cards[play.cardsRed[0]].rotate();
-        play.cards[play.cardsRed[1]].rotate();
+        card1 = play.cards[play.cardsRed[0]];
+        card2 = play.cards[play.cardsRed[1]];
 
-        document.querySelector('#card' + play.cardsRed[0]).querySelector('.front').classList.remove('incorrect');
-        document.querySelector('#card' + play.cardsRed[1]).querySelector('.front').classList.remove('incorrect');
+        card1.rotate(); // закрываем бывшую красную карту
+        card2.rotate(); // и вторую
 
-        play.cardsRed = []; // надо еще убрать класс incorrect
+        card1.removeIncorrect(); // снимаем с них класс некорректности
+        card2.removeIncorrect();
+
+        play.cardsRed = [];
         play.cardsOpened = [];
     }
 
@@ -180,33 +180,32 @@ function gameLogic(id) {
 
     play.cardsOpened.push(id);
 
-
+    // если открытых карт две - вступает логика
 
     if (play.cardsOpened.length === 2) {
 
         // если открыто 2 карты, сверяем их по картинкам
-        var card1 = play.cards[play.cardsOpened[0]];
-        var card2 = play.cards[play.cardsOpened[1]];
+        card1 = play.cards[play.cardsOpened[0]];
+        card2 = play.cards[play.cardsOpened[1]];
 
 
         if (card1.img === card2.img) {
 
-            // совпали! красим зеленым и делаем недоступными
-            // находим карту по id, а в ней уже заходим в front
+            // совпали! красим зеленым
 
-            document.querySelector('#card' + card1.id).querySelector('.front').classList.add('correct');
-            document.querySelector('#card' + card2.id).querySelector('.front').classList.add('correct');
+            card1.setCorrect();
+            card2.setCorrect();
 
             play.cardsGuessed.push(card1.id, card2.id);
             play.cardsOpened = [];
 
-
         } else {
             // не совпали! красим красным и закроем их на следующем клике
-            document.querySelector('#card' + card1.id).querySelector('.front').classList.add('incorrect');
-            document.querySelector('#card' + card2.id).querySelector('.front').classList.add('incorrect');
 
-            play.cardsRed.push(card1.id, card2.id);
+            card1.setIncorrect();
+            card2.setIncorrect();
+
+            play.cardsRed.push(card1.id, card2.id); // запомним красные карты, чтобы закрыть потом
         }
     }
 
