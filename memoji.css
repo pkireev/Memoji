@@ -70,6 +70,13 @@ body {
     background-color: white;
 }
 
+.front.correct {
+    background-color: #5ad66f;
+}
+
+.front.incorrect {
+    background-color: #f44336;
+}
 
 
 
@@ -95,10 +102,4 @@ body {
     animation-direction: alternate;
     animation-fill-mode: forwards;
 }
-
-
-
-
-
-
 
