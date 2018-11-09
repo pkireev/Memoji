@@ -94,10 +94,26 @@ function Card(img, orderNumber) {
  */
 
 function Playground(imgPath, pictures) {
-    // создать набор из 12 карточек
+    // создать набор из 12 карточек (6 пар!)
 
+    /*
+    // версия 1:
     // создаем массив картинок методом перевода строки url в массив дважды, соединения 2 массивов и затем перемешивания
     var _picturesArray = _shuffle(pictures.split(';').concat(pictures.split(';')));
+    */
+
+
+    // версия 2:
+    // создаем массив из 6 случайных карточек, цепляем к нему его же и перемешиваем
+    // делаем так: берем весь массив картинок, перемешиваем, берем первые 6, цепляем к нему его же и перемешиваем
+
+    var _allPicturesArray = _shuffle(pictures.split(';'));
+
+    var _picturesArray = _shuffle(_allPicturesArray.slice(0, 6));
+    _picturesArray = _shuffle(_picturesArray.concat(_picturesArray));
+
+
+
 
 
     function _shuffle(a) { // здесь перемешиваются картинки
@@ -171,13 +187,23 @@ function Playground(imgPath, pictures) {
 
 // при загрузке создаем экземпляр класса игрового поля, создаем 12 объектов карточек со своими картинками
 
+/*
 var _imgPath = 'https://cdn.shopify.com/s/files/1/1061/1924/products/';
 var _pictures = 'tiger_emoji_icon_png_large.png?v=1480481019;' +
     'Bear_emoji_icon_png_large.png?v=1480481027;' +
     'Cow_emoji_icon_png_large.png?v=1480481026;' +
     'Octopus_Iphone_Emoji_JPG_large.png?v=1513340509;' +
     'Rabbit_Face_Emoji_large.png?v=1480481037;' +
-    'Spouting_Whale_Emoji_large.png?v=1480481038';
+    'Spouting_Whale_Emoji_large.png?v=1480481038';*/
+
+
+
+var _imgPath = './img/';
+var _pictures = 'Bear.png;CAT.png;Caterpie_Bug.png;chicken.png;Cow.png;Dog.png;FROG.png;honeybee.png;' +
+    'koala.png;Lady_beetle.png;Monkey.png;Monkey2.png;Octopus.png;Panda.png;Pig.png;Rabbit.png;' +
+    'Spouting_Whale.png;tiger.png;Tropical_Fish.png;Turtle.png;Unicorn.png';
+
+
 
 
 var play = new Playground(_imgPath, _pictures);
@@ -251,6 +277,7 @@ function gameLogic(id) {
     // получаем номер открытой карты и кидаем в массив открытых карт
 
     play.cardsOpened.push(id);
+
 
     // если открытых карт две - вступает логика
 
