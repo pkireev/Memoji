@@ -1,64 +1,64 @@
 
 
 
-// Делаем конструктор класса карточки
+// Make the constructor of card class
 /*
-    img - ссылка на картинку
-    flip - открыта true, закрыта - false, на старте - undefined (не false, чтобы молчала анимация)
-    id - порядковый номер карты
-    domCard - карточка в DOM, чтобы найти конкретную карту через querySelector
-    domFront - лицевая сторона карты в DOM
+    img - url to image
+    flip - opened = true, closed = false, at start = undefined (not false for animation's silence)
+    id - card id
+    domCard - card in DOM for easy finding specific card with querySelector
+    domFront - front side of card in DOM
 */
 
 
 
 function Card(img, orderNumber) {
-    this.img = img; // url картинки
-    this.flip = undefined; // начальное состояние - undefined, рубашкой - false, картинкой - true
+    this.img = img; // image url
+    this.flip = undefined; // begininng state = undefined, closed = false, opened = true
     this.id = orderNumber;
     this.domCard = document.querySelector('#card' + this.id);
     this.domFront = this.domCard.querySelector('.front');
     this.domImg = document.getElementById('img' + this.id);
 
-    //при создании карточки сразу указываем в DOM ссылку на изображение
+    //put image url in "src" attribute
     this.domImg.setAttribute('src', this.img);
 
 
 
 
-    this.rotate = function () { //реализует переворот карточки как на лицо, так и на рубашку
+    this.rotate = function () { // rotates card to make either opened or closed
 
         if (this.flip === undefined) {
-            this.flip = true; // на старте undefined, поэтому цепляем нужные классы открытия
-            this.domCard.classList.add('rotate-card');
-            this.domFront.classList.add('opened');
+            this.flip = true; // at start = undefined and cards have no any class, that's why ADD classes of opening
+            this.domCard.classList.add('rotate-card'); // for animation of opening
+            this.domFront.classList.add('opened'); // front is visible now
         } else {
-            this.flip = !this.flip; // потом просто делаем toggle
-            this.domCard.classList.toggle('rotate-card');
-            this.domCard.classList.toggle('rotate-reverse');
-            this.domFront.classList.toggle('opened');
+            this.flip = !this.flip; // now just doing TOGGLE
+            this.domCard.classList.toggle('rotate-card'); // for animation of closing
+            this.domCard.classList.toggle('rotate-reverse'); // front is unvisible now
+            this.domFront.classList.toggle('opened'); // too
         }
     };
 
 
 
-    this.setCorrect = function () { // делаем лицевую сторону зеленой
+    this.setCorrect = function () { // make front green = correct
         this.domFront.classList.add('correct');
         this.domCard.classList.add('correct');
     };
 
-    this.setIncorrect = function () { // делаем лицевую сторону красной
+    this.setIncorrect = function () { // make fron red = incorrect
         this.domFront.classList.add('incorrect');
         this.domCard.classList.add('incorrect');
     };
 
-    this.removeIncorrect = function () { // снимаем красноту
+    this.removeIncorrect = function () { // remove red color
         this.domFront.classList.remove('incorrect');
         this.domCard.classList.remove('incorrect');
 
     };
 
-    this.removeAll = function () { // удаляем все классы с карты
+    this.removeAll = function () { // remove all classes. it is needed at start of new game
         this.domCard.classList.remove('rotate-card');
         this.domCard.classList.remove('rotate-reverse');
         this.domCard.classList.remove('correct');
@@ -70,7 +70,7 @@ function Card(img, orderNumber) {
     };
 
 
-    // при создании карты очищаем ее прошлые состояния:
+    // while constructing new card it removes all old states
     this.removeAll();
 
 
@@ -80,25 +80,35 @@ function Card(img, orderNumber) {
 
 
 /*
-Делаем конструктор класса игрового поля
+Make the constructor of playground class
 
+here we make an array of all 12 cards (array of urls in fact)
+then shuffle it
+then make an array of card objects
 
-в нем создаем массив объектов всех 12 карточек (изображений)
-перемешиваем массив
-создаем массив объектов карточек
-
-плюс к этому куча разных массивов - открытых карт, угаданных карт, неугаданных карт
-и таймер!
+and many other arrays - opened cards, guessed cards, unguessed cards
+and timer!
 
 
  */
 
 function Playground(imgPath, pictures) {
+<<<<<<< HEAD
     // создать набор из 12 карточек (6 пар!)
 
     /*
     // версия 1:
     // создаем массив картинок методом перевода строки url в массив дважды, соединения 2 массивов и затем перемешивания
+=======
+    // make set of 12 cards
+
+    
+    // you know 'pictures' is the string of 6 urls separated by semicolon
+    // we make 2 arrays with splits 
+    // then join them and have one array of 12 elements
+    // and then shuffle it
+    
+>>>>>>> 919255ce9011bf455b90ab335d0de7d81fde7578
     var _picturesArray = _shuffle(pictures.split(';').concat(pictures.split(';')));
     */
 
@@ -116,7 +126,7 @@ function Playground(imgPath, pictures) {
 
 
 
-    function _shuffle(a) { // здесь перемешиваются картинки
+    function _shuffle(a) { // it is clear
         var j, x, i;
         for (i = a.length - 1; i > 0; i--) {
             j = Math.floor(Math.random() * (i + 1));
@@ -127,23 +137,23 @@ function Playground(imgPath, pictures) {
         return a;
     }
 
-    this.cards = []; //наполняем массив объектов карточек
+    this.cards = []; // array of card objects
 
     for (var i = 0; i < 12; i++) {
         var card = new Card(imgPath + _picturesArray[i], i);
         this.cards.push(card);
     }
 
-    this.cardsOpened = []; // массив из открытых на текущий момент карт
-    this.cardsGuessed = []; // массив из угаданных карт, которые не крутятся больше
-    this.cardsRed = []; // массив из красных карт, чтобы их закрыть
+    this.cardsOpened = []; // array of opened cards at the moment
+    this.cardsGuessed = []; // array of guessed (and green and unrotatable) cards at the moment
+    this.cardsRed = []; // array of red cards for closing them after the next click
 
 
-    this.timeLeft = 60; // сколько секунд на игру
+    this.timeLeft = 60; // how longs the game in seconds
 
 
 
-    this.timerId = undefined; // заготовочка под timerId
+    this.timerId = undefined; // draft for timerId. Undefined = timer is not running
 
 
     this.displayTimer = function () {
@@ -185,7 +195,7 @@ function Playground(imgPath, pictures) {
 
 
 
-// при загрузке создаем экземпляр класса игрового поля, создаем 12 объектов карточек со своими картинками
+// after html is loaded we make an instance of playground class and 12 card objects with image urls
 
 /*
 var _imgPath = 'https://cdn.shopify.com/s/files/1/1061/1924/products/';
@@ -212,7 +222,7 @@ play.displayTimer();
 
 
 
-// навесим события на каждую карточку
+// hangs on events on each card
 
 var cards = Array.from(document.querySelectorAll('.card'));
 
@@ -220,24 +230,24 @@ cards.forEach(function (card) {
     card.addEventListener('click', function(event){
         event.preventDefault();
 
-        var id = parseInt(card.getAttribute('id').replace('card', '')); // это номер открытой только что карты
+        var id = parseInt(card.getAttribute('id').replace('card', '')); // this is id of just opened card
 
+        // if id of just clicked card is in the array of guessed cards, then it does nothing
+        // in other words - there is no meaning to click on green card
 
-        // если номер карты, по которой кликнули, есть в массиве отгаданных, то ничего не происходит,
-        // иными словами по зеленой карте нет смысла клацать
+        // if card id is in the array of opened cards - it does nothing too
+        // in all other cases we make the card rotate and check logic
 
-        // если номер карты есть в массиве открытых, то то же самое
-        // в противном случае - делаем переворот и проверяем по логике
 
         if (play.cardsGuessed.indexOf(id) === -1 && play.cardsOpened.indexOf(id) === -1) {
             play.cards[id].rotate();
 
-            gameLogic(id); // передаем в функцию номер открытой только что карты, закрытую не передаем
+            gameLogic(id); // give card id for logic check
         }
 
 
         if (!play.timerId) {
-            // запускаем таймер, если сейчас был первый клик, определяем по отсутствующему текущему timerId
+            // if it is the first click (timer == undefined) we have to run the timer
 
             play.timerId = setInterval(function () {
                 play.timeLeft--;
@@ -253,18 +263,18 @@ cards.forEach(function (card) {
 
 function gameLogic(id) {
 
-    // эта логика работает на клике. Если событие по таймеру, то оно обрабатывается не здесь!
+    // this is click-initiated logic. There is no timer-events-checking in this function
 
 
     var card1, card2;
-    // сначала проверим - есть ли красные карты, чтобы их закрыть
+    // first of all - checks red cards for closing them
 
     if (play.cardsRed.length > 0) {
         card1 = play.cards[play.cardsRed[0]];
         card2 = play.cards[play.cardsRed[1]];
 
-        card1.rotate(); // закрываем бывшую красную карту
-        card2.rotate(); // и вторую
+        card1.rotate(); // closes red card no.1
+        card2.rotate(); // and no.2
 
         card1.removeIncorrect();
         card2.removeIncorrect();
@@ -274,23 +284,26 @@ function gameLogic(id) {
     }
 
 
-    // получаем номер открытой карты и кидаем в массив открытых карт
+    // we've got id of just opened card and push it in the array
 
     play.cardsOpened.push(id);
 
+<<<<<<< HEAD
 
     // если открытых карт две - вступает логика
+=======
+    // if there are two opened cards - logic runs
+>>>>>>> 919255ce9011bf455b90ab335d0de7d81fde7578
 
     if (play.cardsOpened.length === 2) {
 
-        // если открыто 2 карты, сверяем их по картинкам
         card1 = play.cards[play.cardsOpened[0]];
         card2 = play.cards[play.cardsOpened[1]];
 
-
+        // compare image urls of these cards
         if (card1.img === card2.img) {
 
-            // совпали! красим зеленым
+            // the same! paints green
 
             card1.setCorrect();
             card2.setCorrect();
@@ -299,22 +312,22 @@ function gameLogic(id) {
             play.cardsOpened = [];
 
         } else {
-            // не совпали! красим красным и закроем их на следующем клике
+            // not the same! paints red and will close them after the next click
 
             card1.setIncorrect();
             card2.setIncorrect();
 
-            play.cardsRed.push(card1.id, card2.id); // запомним красные карты, чтобы закрыть потом
+            play.cardsRed.push(card1.id, card2.id); // remember red cards for closing later
         }
 
 
-// сделаем задержку на 400 мс для вывода модального окна, чтобы анимация успела отыграть
+// makes delay 400 ms for rendering of modal window, because of slower animation can play to the end
 
-        if (play.cardsGuessed.length === 12) { // если угадано 12 карт, т.е. все
+        if (play.cardsGuessed.length === 12) { // if 12 cards are guessed - WIN!
 
             clearInterval(play.timerId);
 
-            // сделаем соответствующую надпись на модальном окошке
+            // makes congrats
             document.querySelector('.form .text span:nth-child(1)').innerHTML = 'W';
             document.querySelector('.form .text span:nth-child(2)').innerHTML = 'i';
             document.querySelector('.form .text span:nth-child(3)').innerHTML = 'n';
@@ -326,7 +339,7 @@ function gameLogic(id) {
                 document.querySelector('.form-wrapper').classList.add('show-form');
             }, 400);
 
-            // далее сработает событие по кнопке Play again, которое мы повесим чуть ниже
+            // then will run an event of Play-again button. It is described below
 
       }
     }
@@ -336,18 +349,17 @@ function gameLogic(id) {
 
 
 
-// повесим событие на кнопку Play again в модальном окошке:
+// play-again-button event
 
 var buttonNewGame = document.querySelector('.form-button');
 buttonNewGame.addEventListener('click', function() {
 
     play.cards.forEach(function (card) {
         if (card.flip) {
-            // проверяем - открыта ли карта, чтобы закрыть, а то не все могут быть открыты, если LOSE
+            // check - if the card is open, then we have to close it (not the all cards might be opened if player has lost the game)
             card.rotate();
         }
 
-        // card.removeAll(); // снимем все классы с карты
     });
 
 
@@ -356,7 +368,7 @@ buttonNewGame.addEventListener('click', function() {
 
 
 
-    // НОВАЯ ИГРА через полсекунды, чтобы сработала анимация на закрытие карт!
+    // NEW GAME in a half of second, becase of slower animation
     setTimeout(function () {
         play = new Playground(_imgPath, _pictures);
         play.displayTimer(); // отобразим таймер
