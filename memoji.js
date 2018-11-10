@@ -93,29 +93,28 @@ and timer!
  */
 
 function Playground(imgPath, pictures) {
-<<<<<<< HEAD
-    // создать набор из 12 карточек (6 пар!)
+    // Creates a set of 12 cards (6 pairs!)
 
     /*
-    // версия 1:
-    // создаем массив картинок методом перевода строки url в массив дважды, соединения 2 массивов и затем перемешивания
+    // version 1:
+    // works with 6-card array only by getting it twice and then shuffling
 =======
-    // make set of 12 cards
+
 
     
     // you know 'pictures' is the string of 6 urls separated by semicolon
     // we make 2 arrays with splits 
     // then join them and have one array of 12 elements
     // and then shuffle it
-    
->>>>>>> 919255ce9011bf455b90ab335d0de7d81fde7578
+
     var _picturesArray = _shuffle(pictures.split(';').concat(pictures.split(';')));
     */
 
 
-    // версия 2:
-    // создаем массив из 6 случайных карточек, цепляем к нему его же и перемешиваем
-    // делаем так: берем весь массив картинок, перемешиваем, берем первые 6, цепляем к нему его же и перемешиваем
+    // version 2:
+    // works with any-length array of pictures
+    // creates an array of 6 random cards, gets it twice, then shuffles
+
 
     var _allPicturesArray = _shuffle(pictures.split(';'));
 
@@ -288,12 +287,11 @@ function gameLogic(id) {
 
     play.cardsOpened.push(id);
 
-<<<<<<< HEAD
+
 
     // если открытых карт две - вступает логика
-=======
+
     // if there are two opened cards - logic runs
->>>>>>> 919255ce9011bf455b90ab335d0de7d81fde7578
 
     if (play.cardsOpened.length === 2) {
 
